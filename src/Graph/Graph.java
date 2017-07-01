@@ -1,7 +1,8 @@
 package Graph;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.ListIterator;
-
+// bfs for shortest path and dfs for connected components.
+// https://www.ics.uci.edu/~eppstein/161/960215.html
 /**
  * Created by Prashant on 6/23/16.
  * http://beginnersbook.com/2014/06/difference-between-iterator-and-listiterator-in-java/
@@ -21,6 +22,28 @@ public class Graph {
         adj[u].add(v);
     }
 
+        public void BFS(int s) {
+        
+        boolean visited[] = new boolean[V];
+
+        
+        Queue<Integer> q = new LinkedList<>();
+        
+        visited[s] = true;
+        q.add(s);
+        
+        while(!q.isEmpty()) {
+             int node = q.poll();
+             System.out.println(node + "");
+             for(int i=0; i<adj[node].size(); i++) {
+               if(visited[adj[node].get(i)]==false) {
+            	   visited[adj[node].get(i)] = true;
+                q.add(adj[node].get(i));
+               }
+             }
+        }
+      }
+    
     public void BFS(int s) {
         boolean[] visited = new boolean[V];
         LinkedList<Integer> queue = new LinkedList<Integer>();
@@ -42,6 +65,16 @@ public class Graph {
         }
     }
 
+    public void DFSUTIL(int n, boolean[] visited) {
+		visited[n] = true;
+		System.out.println(n);
+		for (int i = 0; i < adj[n].size(); i++) {
+			if (visited[adj[n].get(i)] == false) {
+				DFSUTIL(adj[n].get(i), visited);
+			}
+		}
+	}
+    
     public void DFSUTIL(int s, boolean[] visited) {
         System.out.print(s+" ");
         visited[s] = true;
@@ -61,6 +94,24 @@ public class Graph {
         DFSUTIL(s, visited);
     }
 
+     public void DFSIterative(int n) {
+		Stack<Integer> s = new Stack();
+		boolean[] visited = new boolean[V];
+		s.push(n);
+		while (!s.isEmpty()) {
+			n = s.pop();
+			if (visited[n] == false) {
+				System.out.println(n);
+				visited[n] = true;
+			}
+			for (int i = 0; i < adj[n].size(); i++) {
+				if (visited[adj[n].get(i)] == false) {
+					s.push(adj[n].get(i));
+				}
+			}
+		}
+	}
+	
     public static void main(String[] args) {
         Graph g = new Graph(4);
 
@@ -80,5 +131,15 @@ public class Graph {
         System.out.println("Following is Dept First Traversal "+
                 "(starting from vertex 2)");
         g.DFS(2);
+	    
+	    
+		  Graph g1 = new Graph(5); // Total 5 vertices in graph
+		    g1.addEdge(1, 0);
+		    g1.addEdge(0, 2);
+		    g1.addEdge(2, 1);
+		    g1.addEdge(0, 3);
+		    g1.addEdge(1, 4);
+		System.out.println("Following is Dept First Traversal " + "(starting from vertex 2) iterative");
+		g1.DFSIterative(0);
     }
 }

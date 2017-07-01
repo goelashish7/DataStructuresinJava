@@ -3,7 +3,7 @@ import java.io.*;
 class FloorSqrt {
     public static int floorSqrt(int x) {
         if(x == 0 || x == 1) return x;
-        int start = 0, end = x/2, ans = 0;
+        int start = 1, end = x, ans = 0;
         while(start <= end) {
             int mid = (start + end) / 2;
             if(mid*mid == x) return mid;
